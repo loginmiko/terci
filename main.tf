@@ -20,15 +20,30 @@ provider "azurerm" {
   skip_provider_registration = true
 }
 
+variable "storage_account_replication_type" {
+  type    = string
+  default = "LRS"
+}
+
+locals {
+  workload_name = "data10050023"
+  environment   = "prod"
+  instance      = "001"
+}
+
 resource "azurerm_resource_group" "rg" {
-  name     = "myrg"
+  name     = "rg-${local.workload_name}-${local.workload_name}-${local.instance}"
   location = "East US"
 }
 
 resource "azurerm_storage_account" "myacc" {
-  name                     = "mystorage10050023"
+  name                     = "st${local.workload_name}${local.instance}"
   location                 = azurerm_resource_group.rg.location
   resource_group_name      = azurerm_resource_group.rg.name
   account_tier             = "Standard"
-  account_replication_type = "LRS"
+  account_replication_type = var.storage_account_replication_type
+}
+
+output "storage_account_primaty_blob_host" {
+  value = azurerm_storage_account.myacc.primary_blob_host
 }
