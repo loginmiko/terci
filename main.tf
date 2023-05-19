@@ -37,7 +37,7 @@ resource "azurerm_resource_group" "rg" {
 }
 
 resource "azurerm_storage_account" "myacc" {
-  name                     = "st${local.workload_name}${local.workload_name}${local.instance}"
+  name                     = "st${local.workload_name}${local.instance}"
   location                 = azurerm_resource_group.rg.location
   resource_group_name      = azurerm_resource_group.rg.name
   account_tier             = "Standard"
